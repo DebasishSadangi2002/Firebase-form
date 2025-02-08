@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Form</title>
+</head>
+<body>
+    <h2>Submit Your Details</h2>
+    <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required><br>
+        <input type="email" id="email" placeholder="Your Email" required><br>
+        <textarea id="message" placeholder="Your Message" required></textarea><br>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <script>
+        const databaseURL = "https://dsad-5c498-default-rtdb.firebaseio.com/messages.json";
+
+        // Form Submission (POST request)
+        document.getElementById("contactForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+
+            fetch(databaseURL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, message })
+            })
+            .then(response => response.json())
+            .then(data => alert("Data Saved Successfully!"))
+            .catch(error => console.error("Error: ", error));
+        });
+
+        // Fetch Data (GET request)
+        function fetchMessages() {
+            fetch(databaseURL)
+                .then(response => response.json())
+                .then(data => console.log(data))
+                .catch(error => console.error("Error fetching data: ", error));
+        }
+
+        fetchMessages();
+    </script>
+</body>
+</html>
